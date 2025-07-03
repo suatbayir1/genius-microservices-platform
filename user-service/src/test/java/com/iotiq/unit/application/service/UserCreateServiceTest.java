@@ -1,7 +1,6 @@
 package com.iotiq.unit.application.service;
 
 import com.iotiq.api.dto.CreateUserRequestDTO;
-import com.iotiq.application.mapper.UserMapper;
 import com.iotiq.application.service.UserCreateService;
 import com.iotiq.domain.model.UserProfile;
 import com.iotiq.domain.repository.UserRepository;
@@ -24,9 +23,6 @@ import static org.mockito.Mockito.*;
 public class UserCreateServiceTest {
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private UserMapper userMapper;
 
     @InjectMocks
     private UserCreateService userCreateService;
@@ -58,7 +54,6 @@ public class UserCreateServiceTest {
         when(userRepository.existsByUserName(requestDTO.userName())).thenReturn(false);
         when(userRepository.existsByEmail(requestDTO.email())).thenReturn(false);
         when(userRepository.save(any(UserProfile.class))).thenReturn(savedUser);
-        when(userMapper.toResponseDto(savedUser)).thenReturn(responseDTO);
 
         // then
         UserProfileResponseDTO result = userCreateService.createUser(requestDTO);
@@ -68,7 +63,6 @@ public class UserCreateServiceTest {
         assertEquals(responseDTO.getEmail(), result.getEmail());
 
         verify(userRepository).save(any(UserProfile.class));
-        verify(userMapper).toResponseDto(savedUser);
     }
 
     @Test
@@ -84,6 +78,5 @@ public class UserCreateServiceTest {
         });
 
         verify(userRepository, never()).save(any());
-        verify(userMapper, never()).toResponseDto(any());
     }
 }

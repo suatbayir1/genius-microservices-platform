@@ -3,7 +3,6 @@ package com.iotiq.unit.application.service;
 import com.iotiq.api.dto.CreateUserRequestDTO;
 import com.iotiq.api.dto.RegisterRequestDTO;
 import com.iotiq.api.dto.RegisterResponseDTO;
-import com.iotiq.application.mapper.AuthMapper;
 import com.iotiq.application.service.RegisterService;
 import com.iotiq.application.validator.RegisterValidator;
 import com.iotiq.domain.exception.PasswordNotMatchException;
@@ -38,9 +37,6 @@ public class RegisterServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Mock
-    private AuthMapper authMapper;
-
-    @Mock
     private RegisterValidator registerValidator;
 
     @InjectMocks
@@ -68,12 +64,10 @@ public class RegisterServiceTest {
         );
 
         doNothing().when(registerValidator).validate(requestDTO);
-        when(authMapper.toEntity(requestDTO)).thenReturn(auth);
         when(passwordEncoder.encode("pass")).thenReturn("encodedPass");
         when(authRepository.save(any(Auth.class))).thenReturn(auth);
         when(userClient.createUser(any(CreateUserRequestDTO.class)))
                 .thenReturn(ResponseEntity.ok(null));
-        when(authMapper.toResponseDto(auth)).thenReturn(responseDTO);
 
         RegisterResponseDTO response = registerService.register(requestDTO);
 
@@ -116,7 +110,6 @@ public class RegisterServiceTest {
                 .build();
 
         doNothing().when(registerValidator).validate(requestDTO);
-        when(authMapper.toEntity(requestDTO)).thenReturn(auth);
         when(passwordEncoder.encode("pass")).thenReturn("encodedPass");
         when(authRepository.save(any(Auth.class))).thenReturn(auth);
         when(userClient.createUser(any(CreateUserRequestDTO.class))).thenThrow(FeignException.Conflict.class);
@@ -140,7 +133,6 @@ public class RegisterServiceTest {
                 .build();
 
         doNothing().when(registerValidator).validate(requestDTO);
-        when(authMapper.toEntity(requestDTO)).thenReturn(auth);
         when(passwordEncoder.encode("pass")).thenReturn("encodedPass");
         when(authRepository.save(any(Auth.class))).thenReturn(auth);
         when(userClient.createUser(any(CreateUserRequestDTO.class))).thenThrow(mock(FeignException.class));

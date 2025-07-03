@@ -1,6 +1,5 @@
 package com.iotiq.unit.application.service;
 
-import com.iotiq.application.mapper.UserMapper;
 import com.iotiq.application.service.GetUserService;
 import com.iotiq.domain.model.UserProfile;
 import com.iotiq.domain.repository.UserRepository;
@@ -23,9 +22,6 @@ import static org.mockito.Mockito.*;
 public class GetUserServiceTest {
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private UserMapper userMapper;
 
     @InjectMocks
     private GetUserService getUserService;
@@ -52,7 +48,6 @@ public class GetUserServiceTest {
 
         // when
         when(userRepository.findByUserName(userName)).thenReturn(Optional.of(user));
-        when(userMapper.toResponseDto(user)).thenReturn(responseDTO);
 
         // then
         UserProfileResponseDTO result = getUserService.getUserByUserName(userName);
@@ -62,7 +57,6 @@ public class GetUserServiceTest {
         assertEquals(responseDTO.getEmail(), result.getEmail());
 
         verify(userRepository).findByUserName(userName);
-        verify(userMapper).toResponseDto(user);
     }
 
     @Test
@@ -79,6 +73,5 @@ public class GetUserServiceTest {
         });
 
         verify(userRepository).findByUserName(userName);
-        verify(userMapper, never()).toResponseDto(any());
     }
 }

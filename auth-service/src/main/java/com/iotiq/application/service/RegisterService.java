@@ -4,7 +4,6 @@ import com.iotiq.api.dto.ApiResponse;
 import com.iotiq.api.dto.CreateUserRequestDTO;
 import com.iotiq.api.dto.RegisterRequestDTO;
 import com.iotiq.api.dto.RegisterResponseDTO;
-import com.iotiq.application.mapper.AuthMapper;
 import com.iotiq.application.usecase.RegisterUseCase;
 import com.iotiq.application.validator.RegisterValidator;
 import com.iotiq.domain.model.Auth;
